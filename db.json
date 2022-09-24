@@ -60,6 +60,18 @@
         "EUR": 600,
         "NTC": 90000
       }
+    },
+    {
+      "created_at": "2022-09-24T19:18:32.658Z",
+      "login": "levs@list.ru",
+      "password": "qwerty",
+      "id": 6,
+      "balance": {
+        "RUB": 0,
+        "USD": 0,
+        "EUR": 0,
+        "NTC": 0
+      }
     }
   ],
   "favorites": {
