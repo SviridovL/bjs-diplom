@@ -70,7 +70,7 @@ UserMoneyManager.sendMoneyCallback = function ({ to, currency, amount }) {
     console.log(response); //console.log(response);
     isSuccess = response.success;
     if (isSuccess === true) {
-      message = `Конвертация валюты  ${fromAmount} ${fromCurrency} в ${targetCurrency}  успешно`;
+      message = `Перевод   ${amount} ${currency} ${to}  успешно`;
       ProfileWidget.showProfile(response.data);
       UserMoneyManager.setMessage(isSuccess, message);
     } else {
@@ -78,4 +78,48 @@ UserMoneyManager.sendMoneyCallback = function ({ to, currency, amount }) {
     }
   }); // => {
   //console.log(response)
+};
+
+const UserFavoritesWidget = new FavoritesWidget();
+ApiConnector.getFavorites((response) => {
+  //console.log(response);
+  if (response.success === true) {
+    UserFavoritesWidget.clearTable(response);
+    UserFavoritesWidget.fillTable(response.data);
+    UserMoneyManager.updateUsersList(response.data);
+  } else {
+    alert(response.error);
+  }
+});
+UserFavoritesWidget.addUserCallback = function ({ id, name }) {
+  ApiConnector.addUserToFavorites({ id, name }, (response) => {
+    console.log(response);
+    isSuccess = response.success;
+    if (response.success === true) {
+      UserFavoritesWidget.clearTable(response);
+      UserFavoritesWidget.fillTable(response.data);
+      UserMoneyManager.updateUsersList(response.data);
+      message = ` Пользователь ${name} добавлен успешно`;
+      UserFavoritesWidget.setMessage(isSuccess, message);
+    } else {
+      message = response.error;
+      UserFavoritesWidget.setMessage(isSuccess, message);
+    }
+  });
+};
+UserFavoritesWidget.removeUserCallback = function (id) {
+  ApiConnector.removeUserFromFavorites(id, (response) => {
+    console.log(response);
+    isSuccess = response.success;
+    if (response.success === true) {
+      UserFavoritesWidget.clearTable(response);
+      UserFavoritesWidget.fillTable(response.data);
+      UserMoneyManager.updateUsersList(response.data);
+      message = `Пользователь удален успешно`;
+      UserFavoritesWidget.setMessage(isSuccess, message);
+    } else {
+      message = response.error;
+      UserFavoritesWidget.setMessage(isSuccess, message);
+    }
+  });
 };
