@@ -65,3 +65,17 @@ UserMoneyManager.conversionMoneyCallback = function ({
     }
   );
 };
+UserMoneyManager.sendMoneyCallback = function ({ to, currency, amount }) {
+  ApiConnector.transferMoney({ to, currency, amount }, (response) => {
+    console.log(response); //console.log(response);
+    isSuccess = response.success;
+    if (isSuccess === true) {
+      message = `Конвертация валюты  ${fromAmount} ${fromCurrency} в ${targetCurrency}  успешно`;
+      ProfileWidget.showProfile(response.data);
+      UserMoneyManager.setMessage(isSuccess, message);
+    } else {
+      UserMoneyManager.setMessage(isSuccess, response.error);
+    }
+  }); // => {
+  //console.log(response)
+};
